@@ -20,15 +20,30 @@ def main():
 
     content = getPage(ghd_ir_url)
     content = content.findAll("div", { "class" : "imgwrap" })
-        
+
+    text = "" 
     for t in content:
         txt = []
         txt.append(t.img["alt"])
-        csvw.writerow(txt)
+        #csvw.writerow(txt)
         #print(t.img["alt"])
         #print(txt)
+        text = text + " " + txt[0]
+        text.replace(":","")
+    
+    text = text.split(" ")
+        
+    histogramm = dict((x, text.count(x)) for x in text)
 
-    fobj.close()                                
+    fobj.close()  
+
+    reihenfolge = sorted(histogramm, key=histogramm.__getitem__, reverse=True)
+
+    #print(reihenfolge)
+
+    top3 = "Die Top 3 Wörter in den Überschriften sind:\n" + reihenfolge[0] + "\n" + reihenfolge[1] + "\n" + reihenfolge[2]
+
+    print(top3)
 
 # main program
 if __name__ == '__main__':
